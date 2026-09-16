@@ -78,17 +78,51 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  /* ── kontaktní formulář (zatím bez backendu) ─────────── */
-  var form = document.querySelector('.contact-form form');
-  if (form) {
+  /* ── kontaktní formulář ───────────────────────────────── */
+  var CONTACT_WEBHOOK_URL = 'https://hook.eu2.make.com/rb567m6lsldz1d4r7aqefwu7lfy502wv';
+  var DEFAULT_SUCCESS_MESSAGE = 'Děkujeme za zprávu, brzy se vám ozveme.';
+  var DEFAULT_ERROR_MESSAGE = 'Zprávu se nepodařilo odeslat. Zkuste to prosím znovu, nebo nás kontaktujte telefonicky či e-mailem.';
+
+  document.querySelectorAll('.contact-form form').forEach(function (form) {
+    var successEl = form.parentElement.querySelector('.form-success');
+    var submitBtn = form.querySelector('button[type="submit"]');
+    var submitLabel = submitBtn ? submitBtn.textContent : '';
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      var success = form.parentElement.querySelector('.form-success');
-      if (success) {
-        success.classList.add('is-visible');
-        success.textContent = 'Děkujeme za zprávu. Formulář zatím není napojen na e-mail / CRM — je potřeba doplnit backend (např. Formspree nebo vlastní API endpoint).';
-      }
-      form.reset();
+      if (!successEl) return;
+
+      var payload = {
+        name: (form.querySelector('[name="name"]') || {}).value || '',
+        phone: (form.querySelector('[name="phone"]') || {}).value || '',
+        email: (form.querySelector('[name="email"]') || {}).value || '',
+        subject: (form.querySelector('[name="subject"]') || {}).value || '',
+        message: (form.querySelector('[name="message"]') || {}).value || '',
+        page: document.title
+      };
+
+      successEl.classList.remove('is-error');
+      successEl.classList.remove('is-visible');
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = '…'; }
+
+      fetch(CONTACT_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+        .then(function (res) {
+          if (!res.ok) throw new Error('Request failed');
+          successEl.textContent = successEl.getAttribute('data-success') || DEFAULT_SUCCESS_MESSAGE;
+          successEl.classList.add('is-visible');
+          form.reset();
+        })
+        .catch(function () {
+          successEl.textContent = successEl.getAttribute('data-error') || DEFAULT_ERROR_MESSAGE;
+          successEl.classList.add('is-visible', 'is-error');
+        })
+        .finally(function () {
+          if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = submitLabel; }
+        });
     });
-  }
+  });
 });

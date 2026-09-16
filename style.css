@@ -413,6 +413,7 @@ nav.main-nav a.nav-cta:hover { background: #d45c00; opacity: 1; }
 .form-note { font-size: 14px; color: var(--mid); margin-top: 14px; line-height: 1.5; }
 .form-success { display: none; background: #e5f3e8; border: 1px solid #b7ddc0; color: #1f6b30; padding: 16px 18px; border-radius: 8px; font-size: 14px; margin-bottom: 18px; }
 .form-success.is-visible { display: block; }
+.form-success.is-error { background: #fbe7e7; border-color: #eeb6b6; color: #a12626; }
 
 /* ── FOOTER ─────────────────────────────────────────────────── */
 footer { background: var(--blue-dark); color: rgba(255,255,255,0.75); padding: 56px 0 28px; }
