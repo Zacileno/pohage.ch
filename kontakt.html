@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kontakt — PoHaGe.ch</title>
+  <meta name="description" content="Kontaktieren Sie PoHaGe.ch — Verkauf, Service und Reparatur von Heizkesseln, Wärmepumpen und Klimaanlagen. Adresse, Telefon, E-Mail und Kontaktformular." />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo"><img src="logo/pohage_LOGO_white.svg" alt="PoHaGe.ch" /></a>
+    <button class="nav-toggle" aria-label="Menü öffnen" aria-expanded="false">☰</button>
+    <nav class="main-nav">
+      <a href="index.html">Startseite</a>
+      <a href="prodej.html">Verkauf</a>
+      <a href="servis.html">Service</a>
+      <a href="opravy.html">Reparaturen</a>
+      <a href="kontakt.html" class="nav-cta active">Kontaktieren Sie uns</a>
+    </nav>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb"><a href="index.html">Startseite</a> / Kontakt</div>
+    <h1>Kontaktieren <span>Sie uns</span></h1>
+    <p>Wir beraten Sie bei der Wahl des Systems, beim Service und bei Notreparaturen. Wir melden uns innerhalb eines Werktages zurück.</p>
+  </div>
+</section>
+
+<section class="section section-light">
+  <div class="container">
+    <div class="contact-wrap">
+      <div class="contact-info">
+        <p>Rufen Sie uns an oder füllen Sie das Formular aus. Wir melden uns umgehend zurück und vereinbaren einen Beratungstermin.</p>
+
+        <div class="contact-detail">
+          <div class="ico"><svg viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div><strong>Adresse</strong><span>PoHaGe GmbH, Sennweidstrasse 45, 6312 Steinhausen</span></div>
+        </div>
+        <div class="contact-detail">
+          <div class="ico"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div><strong>Telefon</strong><a href="tel:+41788111732">+41 78 811 17 32</a></div>
+        </div>
+        <div class="contact-detail">
+          <div class="ico"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 6 10 7L22 6"/></svg></div>
+          <div><strong>E-Mail</strong><a href="mailto:info@pohage.ch">info@pohage.ch</a></div>
+        </div>
+
+        <div class="contact-person">
+          <img src="dan.png" alt="Daniel Popov, Geschäftsführer PoHaGe.ch" />
+          <div><strong>Daniel Popov</strong><span>Geschäftsführer</span></div>
+        </div>
+      </div>
+
+      <div class="contact-form">
+        <h3>Schreiben Sie uns</h3>
+        <p class="form-sub">Füllen Sie das Formular aus, wir melden uns so schnell wie möglich bei Ihnen zurück.</p>
+        <div class="form-success"></div>
+        <form>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="k-name">Vor- und Nachname *</label>
+              <input type="text" id="k-name" name="name" required />
+            </div>
+            <div class="form-group">
+              <label for="k-phone">Telefon *</label>
+              <input type="tel" id="k-phone" name="phone" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="k-email">E-Mail *</label>
+            <input type="email" id="k-email" name="email" required />
+          </div>
+          <div class="form-group">
+            <label for="k-subject">Ich interessiere mich für</label>
+            <select id="k-subject" name="subject">
+              <option>Heizkessel</option>
+              <option>Wärmepumpe</option>
+              <option>Klimaanlage / Lüftungstechnik</option>
+              <option>Service oder Reparatur</option>
+              <option>Sonstiges</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="k-message">Nachricht</label>
+            <textarea id="k-message" name="message" placeholder="Bitte beschreiben Sie, was Sie benötigen…"></textarea>
+          </div>
+          <div class="form-consent">
+            <input type="checkbox" id="k-consent" required />
+            <label for="k-consent">Ich stimme der Verarbeitung meiner personenbezogenen Daten gemäss der <a href="#">Datenschutzerklärung</a> zu. *</label>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Nachricht senden</button>
+          <p class="form-note">Das Formular ist noch nicht mit einem Backend verbunden — vor dem Start muss die Verarbeitung der Anfrage ergänzt werden (z. B. Formspree oder eine eigene API).</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo"><img src="logo/pohage_LOGO_white.svg" alt="PoHaGe.ch" /></div>
+        <p>Verkauf, Service und Reparatur von Heizkesseln, Wärmepumpen, Klimaanlagen und Lüftungstechnik. Alles an einem Ort.</p>
+      </div>
+      <div>
+        <h4>Leistungen</h4>
+        <ul>
+          <li><a href="prodej.html">Verkauf</a></li>
+          <li><a href="servis.html">Service</a></li>
+          <li><a href="opravy.html">Reparaturen</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Informationen</h4>
+        <ul>
+          <li><a href="index.html#lieferanten">Lieferanten</a></li>
+          <li><a href="kontakt.html">Kontakt</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Kontakt</h4>
+        <ul>
+          <li><a href="tel:+41788111732">+41 78 811 17 32</a></li>
+          <li><a href="mailto:info@pohage.ch">info@pohage.ch</a></li>
+          <li>PoHaGe GmbH, Sennweidstrasse 45, 6312 Steinhausen</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 PoHaGe.ch — Alle Rechte vorbehalten.</span>
+      <span class="lang-note">DE · Website vorbereitet für weitere Sprachversionen</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
