@@ -2,20 +2,148 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "headers": [
     {
+      "source": "/",
+      "headers": [
+        {
+          "key": "Content-Language",
+          "value": "de"
+        }
+      ]
+    },
+    {
+      "source": "/index.html",
+      "headers": [
+        {
+          "key": "Content-Language",
+          "value": "de"
+        }
+      ]
+    },
+    {
+      "source": "/prodej.html",
+      "headers": [
+        {
+          "key": "Content-Language",
+          "value": "de"
+        }
+      ]
+    },
+    {
+      "source": "/servis.html",
+      "headers": [
+        {
+          "key": "Content-Language",
+          "value": "de"
+        }
+      ]
+    },
+    {
+      "source": "/opravy.html",
+      "headers": [
+        {
+          "key": "Content-Language",
+          "value": "de"
+        }
+      ]
+    },
+    {
+      "source": "/kontakt.html",
+      "headers": [
+        {
+          "key": "Content-Language",
+          "value": "de"
+        }
+      ]
+    },
+    {
+      "source": "/404.html",
+      "headers": [
+        {
+          "key": "Content-Language",
+          "value": "de"
+        }
+      ]
+    },
+    {
+      "source": "/en",
+      "headers": [
+        {
+          "key": "Content-Language",
+          "value": "en"
+        }
+      ]
+    },
+    {
+      "source": "/en/",
+      "headers": [
+        {
+          "key": "Content-Language",
+          "value": "en"
+        }
+      ]
+    },
+    {
       "source": "/en/:path*",
-      "headers": [{ "key": "Content-Language", "value": "en" }]
+      "headers": [
+        {
+          "key": "Content-Language",
+          "value": "en"
+        }
+      ]
+    },
+    {
+      "source": "/fr",
+      "headers": [
+        {
+          "key": "Content-Language",
+          "value": "fr"
+        }
+      ]
+    },
+    {
+      "source": "/fr/",
+      "headers": [
+        {
+          "key": "Content-Language",
+          "value": "fr"
+        }
+      ]
     },
     {
       "source": "/fr/:path*",
-      "headers": [{ "key": "Content-Language", "value": "fr" }]
+      "headers": [
+        {
+          "key": "Content-Language",
+          "value": "fr"
+        }
+      ]
+    },
+    {
+      "source": "/it",
+      "headers": [
+        {
+          "key": "Content-Language",
+          "value": "it"
+        }
+      ]
+    },
+    {
+      "source": "/it/",
+      "headers": [
+        {
+          "key": "Content-Language",
+          "value": "it"
+        }
+      ]
     },
     {
       "source": "/it/:path*",
-      "headers": [{ "key": "Content-Language", "value": "it" }]
-    },
-    {
-      "source": "/((?!en/|fr/|it/).*)",
-      "headers": [{ "key": "Content-Language", "value": "de" }]
+      "headers": [
+        {
+          "key": "Content-Language",
+          "value": "it"
+        }
+      ]
     }
   ]
 }
