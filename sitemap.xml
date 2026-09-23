@@ -1,32 +1,222 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://pohage.ch/</loc>
-    <lastmod>2026-09-16</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/" />
+    <lastmod>2026-09-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://pohage.ch/prodej.html</loc>
-    <lastmod>2026-09-16</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/prodej.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/prodej.html" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/prodej.html" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/prodej.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/prodej.html" />
+    <lastmod>2026-09-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pohage.ch/servis.html</loc>
-    <lastmod>2026-09-16</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/servis.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/servis.html" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/servis.html" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/servis.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/servis.html" />
+    <lastmod>2026-09-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pohage.ch/opravy.html</loc>
-    <lastmod>2026-09-16</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/opravy.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/opravy.html" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/opravy.html" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/opravy.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/opravy.html" />
+    <lastmod>2026-09-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pohage.ch/kontakt.html</loc>
-    <lastmod>2026-09-16</lastmod>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/kontakt.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/kontakt.html" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/kontakt.html" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/kontakt.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/kontakt.html" />
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://pohage.ch/en/</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/" />
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://pohage.ch/en/prodej.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/prodej.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/prodej.html" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/prodej.html" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/prodej.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/prodej.html" />
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pohage.ch/en/servis.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/servis.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/servis.html" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/servis.html" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/servis.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/servis.html" />
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pohage.ch/en/opravy.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/opravy.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/opravy.html" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/opravy.html" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/opravy.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/opravy.html" />
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pohage.ch/en/kontakt.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/kontakt.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/kontakt.html" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/kontakt.html" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/kontakt.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/kontakt.html" />
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://pohage.ch/fr/</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/" />
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://pohage.ch/fr/prodej.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/prodej.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/prodej.html" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/prodej.html" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/prodej.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/prodej.html" />
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pohage.ch/fr/servis.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/servis.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/servis.html" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/servis.html" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/servis.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/servis.html" />
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pohage.ch/fr/opravy.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/opravy.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/opravy.html" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/opravy.html" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/opravy.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/opravy.html" />
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pohage.ch/fr/kontakt.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/kontakt.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/kontakt.html" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/kontakt.html" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/kontakt.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/kontakt.html" />
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://pohage.ch/it/</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/" />
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://pohage.ch/it/prodej.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/prodej.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/prodej.html" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/prodej.html" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/prodej.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/prodej.html" />
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pohage.ch/it/servis.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/servis.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/servis.html" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/servis.html" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/servis.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/servis.html" />
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pohage.ch/it/opravy.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/opravy.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/opravy.html" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/opravy.html" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/opravy.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/opravy.html" />
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pohage.ch/it/kontakt.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/kontakt.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/kontakt.html" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/kontakt.html" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/kontakt.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/kontakt.html" />
+    <lastmod>2026-09-23</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
