@@ -1,0 +1,21 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "headers": [
+    {
+      "source": "/en/:path*",
+      "headers": [{ "key": "Content-Language", "value": "en" }]
+    },
+    {
+      "source": "/fr/:path*",
+      "headers": [{ "key": "Content-Language", "value": "fr" }]
+    },
+    {
+      "source": "/it/:path*",
+      "headers": [{ "key": "Content-Language", "value": "it" }]
+    },
+    {
+      "source": "/((?!en/|fr/|it/).*)",
+      "headers": [{ "key": "Content-Language", "value": "de" }]
+    }
+  ]
+}
