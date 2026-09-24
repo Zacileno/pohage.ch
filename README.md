@@ -15,9 +15,10 @@ subfolders and use the same file names:
 | English | `/en/` | `https://pohage.ch/en/servis.html` |
 | French | `/fr/` | `https://pohage.ch/fr/servis.html` |
 | Italian | `/it/` | `https://pohage.ch/it/servis.html` |
+| Czech | `/cs/` | `https://pohage.ch/cs/servis.html` |
 
 Every page carries a self-referencing `canonical` plus the full set of `hreflang`
-links (all four languages and `x-default`). When you add a page, add it in **all four**
+links (all five languages and `x-default`). When you add a page, add it in **all five**
 languages and keep those links in sync, otherwise search engines drop the versions
 that are missing from the set.
 

@@ -144,6 +144,33 @@
           "value": "it"
         }
       ]
+    },
+    {
+      "source": "/cs",
+      "headers": [
+        {
+          "key": "Content-Language",
+          "value": "cs"
+        }
+      ]
+    },
+    {
+      "source": "/cs/",
+      "headers": [
+        {
+          "key": "Content-Language",
+          "value": "cs"
+        }
+      ]
+    },
+    {
+      "source": "/cs/:path*",
+      "headers": [
+        {
+          "key": "Content-Language",
+          "value": "cs"
+        }
+      ]
     }
   ]
 }
