@@ -22,7 +22,7 @@ def folder(lang):
 
 
 def url(lang, page):
-    tail = "" if page == "index.html" else page
+    tail = "" if page == "index.html" else page.removesuffix(".html")
     prefix = "" if lang == DEFAULT_LANG else lang + "/"
     return f"{BASE}/{prefix}{tail}"
 

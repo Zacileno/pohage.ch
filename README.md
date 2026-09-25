@@ -11,11 +11,16 @@ subfolders and use the same file names:
 
 | Language | Folder | Example |
 |---|---|---|
-| German (default) | `/` | `https://pohage.ch/servis.html` |
-| English | `/en/` | `https://pohage.ch/en/servis.html` |
-| French | `/fr/` | `https://pohage.ch/fr/servis.html` |
-| Italian | `/it/` | `https://pohage.ch/it/servis.html` |
-| Czech | `/cs/` | `https://pohage.ch/cs/servis.html` |
+| German (default) | `/` | `https://pohage.ch/servis` |
+| English | `/en/` | `https://pohage.ch/en/servis` |
+| French | `/fr/` | `https://pohage.ch/fr/servis` |
+| Italian | `/it/` | `https://pohage.ch/it/servis` |
+| Czech | `/cs/` | `https://pohage.ch/cs/servis` |
+
+URLs have no `.html` extension. `vercel.json` sets `cleanUrls`, so Vercel serves
+`servis.html` at `/servis` and redirects the old `.html` addresses there. Internal
+links, canonical, hreflang and the sitemap all use the short form, so keep writing
+links without `.html`.
 
 Every page carries a self-referencing `canonical` plus the full set of `hreflang`
 links (all five languages and `x-default`). When you add a page, add it in **all five**
