@@ -301,12 +301,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
       successEl.classList.remove('is-error', 'is-visible');
       submitBtn.disabled = true;
-      submitBtn.textContent = '…';
+      submitBtn.textContent = t.sending || '…';
 
       // text/plain = žádný CORS preflight, Apps Script ho neumí.
+      // Apps Script po zápisu přesměruje na druhou adresu s odpovědí. Ten druhý krok
+      // v některých prohlížečích selže (víc přihlášených Google účtů), i když je řádek
+      // zapsaný. Proto ho nesledujeme: přesměrování = skript požadavek zpracoval.
+      // Neplatná data sem nedojdou, stejné kontroly jako skript dělá už formulář.
       var request = BOOKING_URL
-        ? fetch(BOOKING_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
-            .then(function (res) { return res.json(); })
+        ? fetch(BOOKING_URL, { method: 'POST', redirect: 'manual', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
+            .then(function (res) { return res.type === 'opaqueredirect' ? { ok: true } : res.json(); })
         : Promise.resolve(/^(localhost|127\.0\.0\.1)$/.test(location.hostname)
             ? (console.log('booking (demo, BOOKING_URL chybí)', payload), { ok: true })
             : { ok: false });

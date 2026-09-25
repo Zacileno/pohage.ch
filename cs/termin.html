@@ -119,6 +119,7 @@
           data-remove="Odebrat"
           data-prev="Předchozí měsíc"
           data-next="Další měsíc"
+          data-sending="Odesílám, chvilku strpení…"
           data-hours="h">
           <div class="booking-calendar" aria-live="polite">
             <div class="booking-month">
@@ -136,16 +137,16 @@
 
           <div class="form-group">
             <label for="t-name">Jméno a příjmení *</label>
-            <input type="text" id="t-name" name="name" autocomplete="name" required />
+            <input type="text" id="t-name" name="name" autocomplete="name" maxlength="100" required />
           </div>
           <div class="form-row">
             <div class="form-group">
               <label for="t-phone">Telefon *</label>
-              <input type="tel" id="t-phone" name="phone" autocomplete="tel" required />
+              <input type="tel" id="t-phone" name="phone" autocomplete="tel" pattern="[+0-9 \(\)\/.\-]{6,40}" maxlength="40" required />
             </div>
             <div class="form-group">
               <label for="t-email">E-mail *</label>
-              <input type="email" id="t-email" name="email" autocomplete="email" required />
+              <input type="email" id="t-email" name="email" autocomplete="email" maxlength="150" required />
             </div>
           </div>
           <div class="booking-hp" aria-hidden="true">
