@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ── rezervace zpětného hovoru (termin) ──────────────────── */
   // Google Apps Script web app (tools/google-apps-script/booking.gs), končí na /exec.
-  var BOOKING_URL = '';
+  var BOOKING_URL = 'https://script.google.com/macros/s/AKfycbzmhM75HVOQH5ioOHsjCQRMD4cTI8-pmPD54-LwTVFxrWCYrpQlCFQ0vsAEWYNHttZI/exec';
   var SLOT_COUNT = 3;
   var WINDOWS = ['08-10', '10-12', '13-15', '15-17'];
 
@@ -151,6 +151,13 @@ document.addEventListener('DOMContentLoaded', function () {
     navBtns[0].setAttribute('aria-label', t.prev);
     navBtns[1].setAttribute('aria-label', t.next);
 
+    function newId() {
+      if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0;
+        return (c === 'x' ? r : (r & 3 | 8)).toString(16);
+      });
+    }
     function pad(n) { return String(n).padStart(2, '0'); }
     function key(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
     function fromKey(k) { var p = k.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
@@ -166,6 +173,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var lastMonth = new Date(last.getFullYear(), last.getMonth(), 1);
     var openDay = null;
     var slots = [];
+    var requestId = newId();
 
     var monthFmt = new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' });
     var dowFmt = new Intl.DateTimeFormat(locale, { weekday: 'short' });
@@ -281,6 +289,7 @@ document.addEventListener('DOMContentLoaded', function () {
       hint('');
 
       var payload = {
+        requestId: requestId,
         lang: lang,
         name: form.elements.name.value,
         phone: form.elements.phone.value,
@@ -308,6 +317,7 @@ document.addEventListener('DOMContentLoaded', function () {
           successEl.textContent = successEl.getAttribute('data-success');
           successEl.classList.add('is-visible');
           form.reset();
+          requestId = newId();
           slots = [];
           openDay = null;
           month = new Date(first.getFullYear(), first.getMonth(), 1);
