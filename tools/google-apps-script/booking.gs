@@ -20,7 +20,7 @@
  * After every change to this file: Deploy → Manage deployments → edit → New version.
  */
 
-var NOTIFY_EMAILS = ['michaela@zacileno.cz']; // TEST: info@pohage.ch se přidá po otestování
+var NOTIFY_EMAILS = ['info@pohage.ch', 'michaela@zacileno.cz'];
 
 // The web app URL (ends with /exec), needed by the buttons in the e-mails. Time-driven
 // runs cannot look it up reliably themselves.
