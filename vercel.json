@@ -78,6 +78,15 @@
       ]
     },
     {
+      "source": "/ochrana-udaju",
+      "headers": [
+        {
+          "key": "Content-Language",
+          "value": "de"
+        }
+      ]
+    },
+    {
       "source": "/404",
       "headers": [
         {

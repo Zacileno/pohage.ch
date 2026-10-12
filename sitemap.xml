@@ -9,7 +9,7 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -21,9 +21,21 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/kontakt" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/kontakt" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/kontakt" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://pohage.ch/ochrana-udaju</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/ochrana-udaju" />
+    <lastmod>2026-10-12</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
   </url>
   <url>
     <loc>https://pohage.ch/opravy</loc>
@@ -33,7 +45,7 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/opravy" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/opravy" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/opravy" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -45,7 +57,7 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/prodej" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/prodej" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/prodej" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -57,7 +69,7 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/servis" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/servis" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/servis" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -69,7 +81,7 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -81,9 +93,21 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/kontakt" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/kontakt" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/kontakt" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://pohage.ch/en/ochrana-udaju</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/ochrana-udaju" />
+    <lastmod>2026-10-12</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
   </url>
   <url>
     <loc>https://pohage.ch/en/opravy</loc>
@@ -93,7 +117,7 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/opravy" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/opravy" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/opravy" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -105,7 +129,7 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/prodej" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/prodej" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/prodej" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -117,7 +141,7 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/servis" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/servis" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/servis" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -129,7 +153,7 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -141,9 +165,21 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/kontakt" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/kontakt" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/kontakt" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://pohage.ch/fr/ochrana-udaju</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/ochrana-udaju" />
+    <lastmod>2026-10-12</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
   </url>
   <url>
     <loc>https://pohage.ch/fr/opravy</loc>
@@ -153,7 +189,7 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/opravy" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/opravy" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/opravy" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -165,7 +201,7 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/prodej" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/prodej" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/prodej" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -177,7 +213,7 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/servis" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/servis" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/servis" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -189,7 +225,7 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -201,9 +237,21 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/kontakt" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/kontakt" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/kontakt" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://pohage.ch/it/ochrana-udaju</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/ochrana-udaju" />
+    <lastmod>2026-10-12</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
   </url>
   <url>
     <loc>https://pohage.ch/it/opravy</loc>
@@ -213,7 +261,7 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/opravy" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/opravy" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/opravy" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -225,7 +273,7 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/prodej" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/prodej" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/prodej" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -237,7 +285,7 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/servis" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/servis" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/servis" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -249,7 +297,7 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -261,9 +309,21 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/kontakt" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/kontakt" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/kontakt" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://pohage.ch/cs/ochrana-udaju</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://pohage.ch/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pohage.ch/en/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pohage.ch/fr/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/ochrana-udaju" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/ochrana-udaju" />
+    <lastmod>2026-10-12</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
   </url>
   <url>
     <loc>https://pohage.ch/cs/opravy</loc>
@@ -273,7 +333,7 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/opravy" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/opravy" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/opravy" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -285,7 +345,7 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/prodej" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/prodej" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/prodej" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -297,7 +357,7 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://pohage.ch/it/servis" />
     <xhtml:link rel="alternate" hreflang="cs" href="https://pohage.ch/cs/servis" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pohage.ch/servis" />
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

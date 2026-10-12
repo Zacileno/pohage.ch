@@ -79,42 +79,62 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   /* ── kontaktní formulář ───────────────────────────────── */
-  var CONTACT_WEBHOOK_URL = 'https://hook.eu2.make.com/rb567m6lsldz1d4r7aqefwu7lfy502wv';
+  // Jde do stejného Apps Scriptu jako rezervace (BOOKING_URL níže), list „Formulář“.
   var DEFAULT_SUCCESS_MESSAGE = 'Děkujeme za zprávu, brzy se vám ozveme.';
   var DEFAULT_ERROR_MESSAGE = 'Zprávu se nepodařilo odeslat. Zkuste to prosím znovu, nebo nás kontaktujte telefonicky či e-mailem.';
+
+  function newId() {
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = Math.random() * 16 | 0;
+      return (c === 'x' ? r : (r & 3 | 8)).toString(16);
+    });
+  }
+
+  // text/plain = žádný CORS preflight, Apps Script ho neumí.
+  // Apps Script po zápisu přesměruje na druhou adresu s odpovědí. Ten druhý krok
+  // v některých prohlížečích selže (víc přihlášených Google účtů), i když je řádek
+  // zapsaný. Proto ho nesledujeme: přesměrování = skript požadavek zpracoval.
+  // Neplatná data sem nedojdou, stejné kontroly jako skript dělá už formulář.
+  function sendToScript(payload) {
+    return fetch(BOOKING_URL, { method: 'POST', redirect: 'manual', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
+      .then(function (res) { return res.type === 'opaqueredirect' ? { ok: true } : res.json(); });
+  }
 
   document.querySelectorAll('.contact-form:not(.booking) form').forEach(function (form) {
     var successEl = form.parentElement.querySelector('.form-success');
     var submitBtn = form.querySelector('button[type="submit"]');
     var submitLabel = submitBtn ? submitBtn.textContent : '';
+    var requestId = newId();
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (!successEl) return;
 
       var payload = {
-        name: (form.querySelector('[name="name"]') || {}).value || '',
-        phone: (form.querySelector('[name="phone"]') || {}).value || '',
-        email: (form.querySelector('[name="email"]') || {}).value || '',
-        subject: (form.querySelector('[name="subject"]') || {}).value || '',
-        message: (form.querySelector('[name="message"]') || {}).value || '',
-        page: document.title
+        type: 'contact',
+        requestId: requestId,
+        lang: document.documentElement.lang || 'de',
+        name: form.elements.name.value,
+        phone: form.elements.phone.value,
+        email: form.elements.email.value,
+        subject: form.elements.subject.value,
+        message: form.elements.message.value,
+        consent: form.elements.consent.checked,
+        website: form.elements.website.value
       };
 
       successEl.classList.remove('is-error');
       successEl.classList.remove('is-visible');
       if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = '…'; }
 
-      fetch(CONTACT_WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      })
+      sendToScript(payload)
         .then(function (res) {
-          if (!res.ok) throw new Error('Request failed');
+          if (!res || !res.ok) throw new Error('Request failed');
           successEl.textContent = successEl.getAttribute('data-success') || DEFAULT_SUCCESS_MESSAGE;
           successEl.classList.add('is-visible');
           form.reset();
+          requestId = newId();
         })
         .catch(function () {
           successEl.textContent = successEl.getAttribute('data-error') || DEFAULT_ERROR_MESSAGE;
@@ -130,6 +150,10 @@ document.addEventListener('DOMContentLoaded', function () {
   // Google Apps Script web app (tools/google-apps-script/booking.gs), končí na /exec.
   var BOOKING_URL = 'https://script.google.com/macros/s/AKfycbzmhM75HVOQH5ioOHsjCQRMD4cTI8-pmPD54-LwTVFxrWCYrpQlCFQ0vsAEWYNHttZI/exec';
   var SLOT_COUNT = 3;
+  // První den, kdy jde termín vybrat (předtím má Dan plno). Musí sedět s FIRST_DAY v booking.gs.
+  var FIRST_DAY = new Date(2026, 9, 26);
+  // Do konce letošního roku, od července do konce příštího. Stejně jako lastDay() v booking.gs.
+  var OPEN_NEXT_YEAR_FROM_MONTH = 7;
   var WINDOWS = ['08-10', '10-12', '13-15', '15-17'];
 
   document.querySelectorAll('.booking form').forEach(function (form) {
@@ -151,22 +175,16 @@ document.addEventListener('DOMContentLoaded', function () {
     navBtns[0].setAttribute('aria-label', t.prev);
     navBtns[1].setAttribute('aria-label', t.next);
 
-    function newId() {
-      if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        var r = Math.random() * 16 | 0;
-        return (c === 'x' ? r : (r & 3 | 8)).toString(16);
-      });
-    }
     function pad(n) { return String(n).padStart(2, '0'); }
     function key(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
     function fromKey(k) { var p = k.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
     function windowLabel(w) { var h = w.split('-'); return +h[0] + '–' + +h[1] + ' ' + t.hours; }
 
-    // Od zítřka na dva měsíce dopředu, jen pracovní dny.
+    // Od zítřka (nejdřív od FIRST_DAY) do konce roku, jen pracovní dny.
     var today = new Date(); today.setHours(0, 0, 0, 0);
     var first = new Date(today); first.setDate(first.getDate() + 1);
-    var last = new Date(today); last.setMonth(last.getMonth() + 2);
+    if (first < FIRST_DAY) first = new Date(FIRST_DAY);
+    var last = new Date(today.getFullYear() + (today.getMonth() + 1 >= OPEN_NEXT_YEAR_FROM_MONTH ? 1 : 0), 11, 31);
     function bookable(d) { var w = d.getDay(); return d >= first && d <= last && w !== 0 && w !== 6; }
 
     var month = new Date(first.getFullYear(), first.getMonth(), 1);
@@ -303,14 +321,8 @@ document.addEventListener('DOMContentLoaded', function () {
       submitBtn.disabled = true;
       submitBtn.textContent = t.sending || '…';
 
-      // text/plain = žádný CORS preflight, Apps Script ho neumí.
-      // Apps Script po zápisu přesměruje na druhou adresu s odpovědí. Ten druhý krok
-      // v některých prohlížečích selže (víc přihlášených Google účtů), i když je řádek
-      // zapsaný. Proto ho nesledujeme: přesměrování = skript požadavek zpracoval.
-      // Neplatná data sem nedojdou, stejné kontroly jako skript dělá už formulář.
       var request = BOOKING_URL
-        ? fetch(BOOKING_URL, { method: 'POST', redirect: 'manual', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
-            .then(function (res) { return res.type === 'opaqueredirect' ? { ok: true } : res.json(); })
+        ? sendToScript(payload)
         : Promise.resolve(/^(localhost|127\.0\.0\.1)$/.test(location.hostname)
             ? (console.log('booking (demo, BOOKING_URL chybí)', payload), { ok: true })
             : { ok: false });

@@ -143,9 +143,13 @@
             <label for="k-message">Nachricht</label>
             <textarea id="k-message" name="message" placeholder="Bitte beschreiben Sie, was Sie benötigen…"></textarea>
           </div>
+          <div class="booking-hp" aria-hidden="true">
+            <label for="k-website">Website</label>
+            <input type="text" id="k-website" name="website" tabindex="-1" autocomplete="off" />
+          </div>
           <div class="form-consent">
-            <input type="checkbox" id="k-consent" required />
-            <label for="k-consent">Ich stimme der Verarbeitung meiner personenbezogenen Daten gemäss der <a href="#">Datenschutzerklärung</a> zu. *</label>
+            <input type="checkbox" id="k-consent" name="consent" required />
+            <label for="k-consent">Ich stimme der Verarbeitung meiner personenbezogenen Daten gemäss der <a href="ochrana-udaju">Datenschutzerklärung</a> zu. *</label>
           </div>
           <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Nachricht senden</button>
         </form>

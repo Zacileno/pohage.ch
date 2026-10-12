@@ -381,9 +381,13 @@
             <label for="f-message">Nachricht</label>
             <textarea id="f-message" name="message" placeholder="Bitte beschreiben Sie, was Sie benötigen…"></textarea>
           </div>
+          <div class="booking-hp" aria-hidden="true">
+            <label for="f-website">Website</label>
+            <input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off" />
+          </div>
           <div class="form-consent">
-            <input type="checkbox" id="f-consent" required />
-            <label for="f-consent">Ich stimme der Verarbeitung meiner personenbezogenen Daten gemäss der <a href="#">Datenschutzerklärung</a> zu. *</label>
+            <input type="checkbox" id="f-consent" name="consent" required />
+            <label for="f-consent">Ich stimme der Verarbeitung meiner personenbezogenen Daten gemäss der <a href="ochrana-udaju">Datenschutzerklärung</a> zu. *</label>
           </div>
           <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Anfrage senden</button>
         </form>

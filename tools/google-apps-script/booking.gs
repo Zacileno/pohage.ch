@@ -1,12 +1,14 @@
 /**
- * PoHaGe – callback booking endpoint.
+ * PoHaGe – website forms endpoint.
  *
- * The /termin page posts three preferred callback slots here. The script validates
- * the request and appends one row to the "Termíny" sheet.
+ * Two forms post here:
+ * - /termin (type "booking"): three preferred callback slots → sheet "Schůzka",
+ * - contact form on the homepage and /kontakt (type "contact") → sheet "Formulář".
+ * The script validates the request and appends one row to the right sheet.
  *
  * Every 15 minutes sendPending() e-mails the office about rows that have not been
- * announced yet (with a link to the sheet and a "Zavoláno" button that ticks the row
- * off). If nothing new came in, it does nothing. Every Monday morning weeklyReport()
+ * announced yet (with a link to the sheet and a button that ticks the row off).
+ * If nothing new came in, it does nothing. Every Monday morning weeklyReport()
  * sends the number of requests that are still not ticked off, which also shows that
  * the script is alive.
  *
@@ -18,23 +20,42 @@
  * After every change to this file: Deploy → Manage deployments → edit → New version.
  */
 
-var NOTIFY_EMAIL = 'info@pohage.ch';
+var NOTIFY_EMAILS = ['michaela@zacileno.cz']; // TEST: info@pohage.ch se přidá po otestování
 
-// The web app URL (ends with /exec), needed by the "Zavoláno" button. Time-driven runs
-// cannot look it up reliably themselves.
+// The web app URL (ends with /exec), needed by the buttons in the e-mails. Time-driven
+// runs cannot look it up reliably themselves.
 var WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbzmhM75HVOQH5ioOHsjCQRMD4cTI8-pmPD54-LwTVFxrWCYrpQlCFQ0vsAEWYNHttZI/exec';
-var SHEET_NAME = 'Termíny';
 var TIME_ZONE = 'Europe/Zurich';
-var DAYS_AHEAD = 63;          // the page shows two months; a few days of slack
+// First bookable weekday, yyyy-MM-dd. Must match FIRST_DAY in js/main.js.
+var FIRST_DAY = '2026-10-26';
+// The calendar runs to the end of this year; from July on, to the end of next year.
+// Must match lastDay() in js/main.js.
+var OPEN_NEXT_YEAR_FROM_MONTH = 7;
 var SLOT_COUNT = 3;
 var WINDOWS = ['08-10', '10-12', '13-15', '15-17'];
 var LANGS = ['de', 'en', 'fr', 'it', 'cs'];
 var REPORT_HOUR = 8;          // Monday report, hour in the project time zone
-var HEADER = ['Jméno', 'Jazyk', 'Termín 1', 'Termín 2', 'Termín 3', 'Telefon', 'E-mail', 'Zavoláno', 'Přijato', 'ID', 'Odesláno'];
 var UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-var COL = { name: 1, lang: 2, slot1: 3, phone: 6, email: 7, called: 8, received: 9, id: 10, sent: 11 };
 
-/* ── booking from the website ─────────────────────────────── */
+// One entry per sheet. COL numbers are 1-based columns of that sheet.
+var SHEETS = {
+  booking: {
+    name: 'Schůzka',
+    legacyName: 'Termíny',    // renamed on first use
+    header: ['Jméno', 'Jazyk', 'Termín 1', 'Termín 2', 'Termín 3', 'Telefon', 'E-mail', 'Zavoláno', 'Přijato', 'ID', 'Odesláno'],
+    col: { name: 1, lang: 2, slot1: 3, phone: 6, email: 7, done: 8, received: 9, id: 10, sent: 11 },
+    doneLabel: 'Zavoláno'
+  },
+  contact: {
+    name: 'Formulář',
+    header: ['Jméno', 'Telefon', 'E-mail', 'Zájem o', 'Zpráva', 'Jazyk', 'Vyřízeno', 'Přijato', 'ID', 'Odesláno'],
+    col: { name: 1, phone: 2, email: 3, subject: 4, message: 5, lang: 6, done: 7, received: 8, id: 9, sent: 10 },
+    doneLabel: 'Vyřízeno'
+  }
+};
+var KINDS = ['booking', 'contact'];
+
+/* ── request from the website ─────────────────────────────── */
 
 function doPost(e) {
   try {
@@ -43,14 +64,15 @@ function doPost(e) {
     // Honeypot: real visitors never fill the hidden "website" field.
     if (data.website) return json({ ok: true });
 
-    var booking = validate(data);
+    var kind = data.type === 'contact' ? 'contact' : 'booking';
+    var entry = kind === 'contact' ? validateContact(data) : validateBooking(data);
     // The page sends one ID per filled-in form, so a retried request is stored once.
-    booking.id = UUID.test(String(data.requestId)) ? String(data.requestId).toLowerCase() : Utilities.getUuid();
+    entry.id = UUID.test(String(data.requestId)) ? String(data.requestId).toLowerCase() : Utilities.getUuid();
 
     var lock = LockService.getScriptLock();
     lock.waitLock(10000);
     try {
-      if (!findRow(booking.id)) appendRow(booking);
+      if (!findRow(kind, entry.id)) appendRow(kind, entry);
     } finally {
       lock.releaseLock();
     }
@@ -60,7 +82,8 @@ function doPost(e) {
   }
 }
 
-function validate(data) {
+// Name, phone, e-mail, language and consent, shared by both forms.
+function validatePerson(data) {
   var name = clean(data.name, 100);
   var phone = clean(data.phone, 40);
   var email = clean(data.email, 150);
@@ -71,6 +94,11 @@ function validate(data) {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error('invalid');
   if (data.consent !== true) throw new Error('invalid');
 
+  return { name: name, phone: phone, email: email, lang: lang };
+}
+
+function validateBooking(data) {
+  var b = validatePerson(data);
   var allowed = allowedDates();
   var seen = {};
   var slots = (Array.isArray(data.slots) ? data.slots : []).filter(function (slot) {
@@ -82,74 +110,100 @@ function validate(data) {
   });
   if (slots.length !== SLOT_COUNT) throw new Error('invalid');
   slots.sort();
-
-  return { name: name, phone: phone, email: email, lang: lang, slots: slots };
+  b.slots = slots;
+  return b;
 }
 
-// Weekdays from today up to DAYS_AHEAD days, as yyyy-MM-dd in Swiss time.
+function validateContact(data) {
+  var c = validatePerson(data);
+  c.subject = clean(data.subject, 100);
+  c.message = clean(data.message, 3000);
+  return c;
+}
+
+function lastDay() {
+  var now = new Date();
+  var year = Number(Utilities.formatDate(now, TIME_ZONE, 'yyyy'));
+  var month = Number(Utilities.formatDate(now, TIME_ZONE, 'M'));
+  return (month >= OPEN_NEXT_YEAR_FROM_MONTH ? year + 1 : year) + '-12-31';
+}
+
+// Weekdays from FIRST_DAY (or today, if later) to lastDay(), as yyyy-MM-dd in Swiss time.
 // Today is accepted so a form opened just before midnight still goes through.
 function allowedDates() {
   var result = {};
-  var now = new Date();
-  for (var i = 0; i <= DAYS_AHEAD; i++) {
-    var day = new Date(now.getTime() + i * 86400000);
+  var last = lastDay();
+  var day = new Date();
+  for (var i = 0; i < 560; i++, day = new Date(day.getTime() + 86400000)) {
+    var key = Utilities.formatDate(day, TIME_ZONE, 'yyyy-MM-dd');
+    if (key > last) break;
     var weekday = Number(Utilities.formatDate(day, TIME_ZONE, 'u')); // 1 = Monday … 7 = Sunday
-    if (weekday <= 5) result[Utilities.formatDate(day, TIME_ZONE, 'yyyy-MM-dd')] = true;
+    if (key >= FIRST_DAY && weekday <= 5) result[key] = true;
   }
   return result;
 }
 
-/* ── sheet ────────────────────────────────────────────────── */
+/* ── sheets ───────────────────────────────────────────────── */
 
-function getSheet() {
+function getSheet(kind) {
+  var cfg = SHEETS[kind];
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = ss.getSheetByName(SHEET_NAME);
+  var sheet = ss.getSheetByName(cfg.name);
   if (sheet) return sheet;
 
-  sheet = ss.insertSheet(SHEET_NAME);
-  sheet.appendRow(HEADER);
+  var legacy = cfg.legacyName && ss.getSheetByName(cfg.legacyName);
+  if (legacy) return legacy.setName(cfg.name);
+
+  sheet = ss.insertSheet(cfg.name);
+  sheet.appendRow(cfg.header);
   sheet.setFrozenRows(1);
-  sheet.getRange(1, 1, 1, HEADER.length).setFontWeight('bold');
-  sheet.hideColumns(COL.id, 2);
-  sheet.getRange('F:F').setNumberFormat('@'); // keeps leading zeros and + in phone numbers
-  // Called rows turn grey.
+  sheet.getRange(1, 1, 1, cfg.header.length).setFontWeight('bold');
+  sheet.hideColumns(cfg.col.id, 2);
+  // Keeps leading zeros and + in phone numbers.
+  sheet.getRange(1, cfg.col.phone, sheet.getMaxRows(), 1).setNumberFormat('@');
+  // Rows that are done turn grey.
+  var doneCol = String.fromCharCode(64 + cfg.col.done);
+  var lastCol = String.fromCharCode(64 + cfg.header.length);
   var rule = SpreadsheetApp.newConditionalFormatRule()
-    .whenFormulaSatisfied('=$H2=TRUE')
+    .whenFormulaSatisfied('=$' + doneCol + '2=TRUE')
     .setBackground('#e8e8e8')
     .setFontColor('#888888')
-    .setRanges([sheet.getRange('A2:K')])
+    .setRanges([sheet.getRange('A2:' + lastCol)])
     .build();
   sheet.setConditionalFormatRules([rule]);
   return sheet;
 }
 
-function appendRow(b) {
-  var sheet = getSheet();
-  sheet.appendRow([
-    safe(b.name),
-    b.lang,
-    formatSlot(b.slots[0]),
-    formatSlot(b.slots[1]),
-    formatSlot(b.slots[2]),
-    safe(b.phone),
-    safe(b.email),
-    false,
-    Utilities.formatDate(new Date(), TIME_ZONE, 'dd.MM.yyyy HH:mm'),
-    b.id,
-    ''
-  ]);
-  sheet.getRange(sheet.getLastRow(), COL.called).insertCheckboxes();
+function appendRow(kind, x) {
+  var cfg = SHEETS[kind];
+  var sheet = getSheet(kind);
+  var received = Utilities.formatDate(new Date(), TIME_ZONE, 'dd.MM.yyyy HH:mm');
+  var row = kind === 'contact'
+    ? [safe(x.name), safe(x.phone), safe(x.email), safe(x.subject), safe(x.message), x.lang, false, received, x.id, '']
+    : [safe(x.name), x.lang, formatSlot(x.slots[0]), formatSlot(x.slots[1]), formatSlot(x.slots[2]),
+       safe(x.phone), safe(x.email), false, received, x.id, ''];
+  sheet.appendRow(row);
+  sheet.getRange(sheet.getLastRow(), cfg.col.done).insertCheckboxes();
 }
 
-function findRow(id) {
-  var sheet = getSheet();
+function findRow(kind, id) {
+  var sheet = getSheet(kind);
   var last = sheet.getLastRow();
   if (last < 2) return 0;
-  var ids = sheet.getRange(2, COL.id, last - 1, 1).getValues();
+  var ids = sheet.getRange(2, SHEETS[kind].col.id, last - 1, 1).getValues();
   for (var i = 0; i < ids.length; i++) {
     if (ids[i][0] === id) return i + 2;
   }
   return 0;
+}
+
+// Looks the ID up in all sheets, for the buttons in the e-mails.
+function locate(id) {
+  for (var i = 0; i < KINDS.length; i++) {
+    var row = findRow(KINDS[i], id);
+    if (row) return { kind: KINDS[i], row: row };
+  }
+  return null;
 }
 
 /* ── e-mails (time-driven) ────────────────────────────────── */
@@ -160,68 +214,72 @@ function sendPending() {
   var lock = LockService.getScriptLock();
   if (!lock.tryLock(1000)) return; // the previous run is still busy
   try {
-    var sheet = getSheet();
-    var last = sheet.getLastRow();
-    if (last < 2) return;
-    var rows = sheet.getRange(2, 1, last - 1, HEADER.length).getValues();
-    rows.forEach(function (r, i) {
-      if (r[COL.sent - 1] || !r[COL.id - 1]) return;
-      notify(r, i + 2);
-      sheet.getRange(i + 2, COL.sent).setValue(Utilities.formatDate(new Date(), TIME_ZONE, 'dd.MM.yyyy HH:mm'));
-      SpreadsheetApp.flush(); // a crash later on must not send this one twice
+    KINDS.forEach(function (kind) {
+      var cfg = SHEETS[kind];
+      var sheet = getSheet(kind);
+      var last = sheet.getLastRow();
+      if (last < 2) return;
+      var rows = sheet.getRange(2, 1, last - 1, cfg.header.length).getValues();
+      rows.forEach(function (r, i) {
+        if (r[cfg.col.sent - 1] || !r[cfg.col.id - 1]) return;
+        notify(kind, r, i + 2);
+        sheet.getRange(i + 2, cfg.col.sent).setValue(Utilities.formatDate(new Date(), TIME_ZONE, 'dd.MM.yyyy HH:mm'));
+        SpreadsheetApp.flush(); // a crash later on must not send this one twice
+      });
     });
   } finally {
     lock.releaseLock();
   }
 }
 
-function notify(r, row) {
-  var sheet = getSheet();
+function notify(kind, r, row) {
+  var cfg = SHEETS[kind];
+  var c = cfg.col;
+  var sheet = getSheet(kind);
   var sheetUrl = SpreadsheetApp.getActiveSpreadsheet().getUrl() +
     '#gid=' + sheet.getSheetId() + '&range=A' + row;
-  var calledUrl = WEBAPP_URL + '?called=' + r[COL.id - 1];
-  var name = String(r[COL.name - 1]);
-  var lang = String(r[COL.lang - 1]);
-  var phone = String(r[COL.phone - 1]);
-  var email = String(r[COL.email - 1]);
-  var slots = [r[COL.slot1 - 1], r[COL.slot1], r[COL.slot1 + 1]].map(String);
+  var doneUrl = WEBAPP_URL + '?done=' + r[c.id - 1];
+  var name = String(r[c.name - 1]);
+  var phone = String(r[c.phone - 1]);
+  var email = String(r[c.email - 1]);
 
-  var text = [
-    'Nová žádost o zavolání z webu pohage.ch',
-    '',
-    'Jméno: ' + name,
-    'Jazyk: ' + lang,
-    'Telefon: ' + phone,
-    'E-mail: ' + email,
-    '',
-    'Termíny, které se klientovi hodí:',
-    '1. ' + slots[0],
-    '2. ' + slots[1],
-    '3. ' + slots[2],
-    '',
-    'Tabulka: ' + sheetUrl,
-    'Označit jako zavoláno: ' + calledUrl
-  ].join('\n');
+  var fields = [['Jméno', name], ['Jazyk', String(r[c.lang - 1])], ['Telefon', phone], ['E-mail', email]];
+  var title, subject;
+  if (kind === 'contact') {
+    title = 'Nová poptávka z webu';
+    subject = 'Poptávka z webu: ' + name;
+    fields.push(['Zájem o', String(r[c.subject - 1])], ['Zpráva', String(r[c.message - 1])]);
+  } else {
+    title = 'Nová žádost o zavolání';
+    subject = 'Zavolat: ' + name + ' (' + phone + ')';
+    fields.push(['Termíny', [r[c.slot1 - 1], r[c.slot1], r[c.slot1 + 1]].map(String).join('\n')]);
+  }
+
+  var text = [title + ' (pohage.ch)', ''].concat(fields.map(function (f) {
+    return f[0] + ': ' + f[1];
+  })).concat(['', 'Tabulka: ' + sheetUrl, 'Označit jako ' + cfg.doneLabel.toLowerCase() + ': ' + doneUrl]).join('\n');
 
   var cell = 'padding:6px 16px 6px 0;vertical-align:top;';
   var html =
     '<div style="font-family:Arial,sans-serif;font-size:15px;color:#1a1a1a;line-height:1.5">' +
-    '<h2 style="font-size:18px;margin:0 0 16px">Nová žádost o zavolání</h2>' +
+    '<h2 style="font-size:18px;margin:0 0 16px">' + title + '</h2>' +
     '<table style="border-collapse:collapse">' +
-    '<tr><td style="' + cell + 'color:#666">Jméno</td><td style="' + cell + '"><b>' + esc(name) + '</b></td></tr>' +
-    '<tr><td style="' + cell + 'color:#666">Jazyk</td><td style="' + cell + '">' + esc(lang) + '</td></tr>' +
-    '<tr><td style="' + cell + 'color:#666">Telefon</td><td style="' + cell + '"><a href="tel:' + esc(phone.replace(/[^+0-9]/g, '')) + '">' + esc(phone) + '</a></td></tr>' +
-    '<tr><td style="' + cell + 'color:#666">E-mail</td><td style="' + cell + '"><a href="mailto:' + esc(email) + '">' + esc(email) + '</a></td></tr>' +
-    '<tr><td style="' + cell + 'color:#666">Termíny</td><td style="' + cell + '">' + slots.map(esc).join('<br>') + '</td></tr>' +
+    fields.map(function (f) {
+      var value = esc(f[1]).replace(/\n/g, '<br>');
+      if (f[0] === 'Jméno') value = '<b>' + value + '</b>';
+      if (f[0] === 'Telefon') value = '<a href="tel:' + esc(phone.replace(/[^+0-9]/g, '')) + '">' + value + '</a>';
+      if (f[0] === 'E-mail') value = '<a href="mailto:' + esc(email) + '">' + value + '</a>';
+      return '<tr><td style="' + cell + 'color:#666">' + f[0] + '</td><td style="' + cell + '">' + value + '</td></tr>';
+    }).join('') +
     '</table>' +
     '<p style="margin:24px 0 0">' +
-    button(calledUrl, '✓ Zavoláno', true) + button(sheetUrl, 'Otevřít tabulku', false) +
+    button(doneUrl, '✓ ' + cfg.doneLabel, true) + button(sheetUrl, 'Otevřít tabulku', false) +
     '</p></div>';
 
   MailApp.sendEmail({
-    to: NOTIFY_EMAIL,
+    to: NOTIFY_EMAILS.join(','),
     replyTo: email,
-    subject: 'Zavolat: ' + name + ' (' + phone + ')',
+    subject: subject,
     body: text,
     htmlBody: html
   });
@@ -230,29 +288,34 @@ function notify(r, row) {
 // Every Monday: how many requests are still not ticked off. Sent even when it is zero,
 // so a missing Monday e-mail means the script has stopped.
 function weeklyReport() {
-  var sheet = getSheet();
-  var last = sheet.getLastRow();
-  var open = 0;
-  if (last >= 2) {
-    sheet.getRange(2, 1, last - 1, HEADER.length).getValues().forEach(function (r) {
-      if (r[COL.id - 1] && r[COL.called - 1] !== true) open++;
-    });
-  }
-  var sheetUrl = SpreadsheetApp.getActiveSpreadsheet().getUrl() + '#gid=' + sheet.getSheetId();
+  var counts = KINDS.map(function (kind) {
+    var cfg = SHEETS[kind];
+    var sheet = getSheet(kind);
+    var last = sheet.getLastRow();
+    var open = 0;
+    if (last >= 2) {
+      sheet.getRange(2, 1, last - 1, cfg.header.length).getValues().forEach(function (r) {
+        if (r[cfg.col.id - 1] && r[cfg.col.done - 1] !== true) open++;
+      });
+    }
+    return { label: cfg.name + ' (bez „' + cfg.doneLabel + '“)', open: open };
+  });
+  var open = counts[0].open + counts[1].open;
+  var sheetUrl = SpreadsheetApp.getActiveSpreadsheet().getUrl();
   var summary = open === 0
     ? 'Všechny poptávky jsou vyřízené.'
-    : 'Nevyřízené poptávky (bez „Zavoláno“): ' + open;
+    : counts.map(function (c) { return c.label + ': ' + c.open; }).join('\n');
 
   MailApp.sendEmail({
-    to: NOTIFY_EMAIL,
-    subject: 'Kontrola rezervací: ' + open + ' nevyřízených',
-    body: summary + '\n\nRezervační systém na pohage.ch funguje.\n\nTabulka: ' + sheetUrl,
+    to: NOTIFY_EMAILS.join(','),
+    subject: 'Kontrola poptávek z webu: ' + open + ' nevyřízených',
+    body: summary + '\n\nFormuláře na pohage.ch fungují.\n\nTabulka: ' + sheetUrl,
     htmlBody:
       '<div style="font-family:Arial,sans-serif;font-size:15px;color:#1a1a1a;line-height:1.5">' +
-      '<h2 style="font-size:18px;margin:0 0 12px">Týdenní kontrola rezervací</h2>' +
+      '<h2 style="font-size:18px;margin:0 0 12px">Týdenní kontrola poptávek z webu</h2>' +
       '<p style="font-size:28px;font-weight:bold;margin:0 0 4px;color:' + (open ? '#c05600' : '#1f7a3a') + '">' + open + '</p>' +
-      '<p style="margin:0 0 16px">' + esc(summary) + '</p>' +
-      '<p style="margin:0 0 20px;color:#666">Rezervační systém na pohage.ch funguje.</p>' +
+      '<p style="margin:0 0 16px">' + esc(summary).replace(/\n/g, '<br>') + '</p>' +
+      '<p style="margin:0 0 20px;color:#666">Formuláře na pohage.ch fungují.</p>' +
       button(sheetUrl, 'Otevřít tabulku', false) +
       '</div>'
   });
@@ -264,38 +327,45 @@ function button(url, label, primary) {
     '">' + label + '</a>';
 }
 
-/* ── "Zavoláno" button from the e-mail ────────────────────── */
+/* ── "Zavoláno" / "Vyřízeno" button from the e-mail ───────── */
 
 // The link only opens a confirmation page. The row is ticked when the button on that
 // page is pressed, so mail scanners that open links on their own cannot tick it.
+// "?called=" is the parameter of e-mails sent before the contact form was added.
 function doGet(e) {
-  var id = String((e && e.parameter && e.parameter.called) || '');
-  var row = UUID.test(id) ? findRow(id) : 0;
+  var p = (e && e.parameter) || {};
+  var id = String(p.done || p.called || '');
+  var hit = UUID.test(id) ? locate(id) : null;
   var tpl;
-  if (!row) {
-    tpl = page('Záznam nenalezen', '<p>Tahle žádost v tabulce není. Mohla být smazána.</p>');
+  if (!hit) {
+    tpl = page('Záznam nenalezen', '<p>Tahle poptávka v tabulce není. Mohla být smazána.</p>');
   } else {
-    var values = getSheet().getRange(row, 1, 1, HEADER.length).getValues()[0];
-    var done = values[COL.called - 1] === true;
+    var cfg = SHEETS[hit.kind];
+    var c = cfg.col;
+    var values = getSheet(hit.kind).getRange(hit.row, 1, 1, cfg.header.length).getValues()[0];
+    var done = values[c.done - 1] === true;
+    var detail = hit.kind === 'contact'
+      ? esc(values[c.subject - 1]) + '<br>' + esc(values[c.message - 1]).replace(/\n/g, '<br>')
+      : esc(values[c.slot1 - 1]) + '<br>' + esc(values[c.slot1]) + '<br>' + esc(values[c.slot1 + 1]);
     tpl = page(
-      esc(values[0]) + ' · ' + esc(values[5]),
+      esc(values[c.name - 1]) + ' · ' + esc(values[c.phone - 1]),
       done
-        ? '<p class="ok">✓ Už je označeno jako zavoláno.</p>'
-        : '<p>' + esc(values[2]) + '<br>' + esc(values[3]) + '<br>' + esc(values[4]) + '</p>' +
+        ? '<p class="ok">✓ Už je označeno: ' + cfg.doneLabel.toLowerCase() + '.</p>'
+        : '<p>' + detail + '</p>' +
           '<button id="b" onclick="this.disabled=true;google.script.run.withSuccessHandler(function(){' +
-          'document.getElementById(\'b\').outerHTML=\'<p class=ok>✓ Označeno jako zavoláno.</p>\'})' +
-          '.markCalled(\'' + id + '\')">✓ Zavoláno</button>'
+          'document.getElementById(\'b\').outerHTML=\'<p class=ok>✓ Označeno: ' + cfg.doneLabel.toLowerCase() + '.</p>\'})' +
+          '.markDone(\'' + id + '\')">✓ ' + cfg.doneLabel + '</button>'
     );
   }
   return HtmlService.createHtmlOutput(tpl)
-    .setTitle('PoHaGe – zavoláno')
+    .setTitle('PoHaGe – vyřízeno')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1');
 }
 
-function markCalled(id) {
-  var row = UUID.test(String(id)) ? findRow(String(id)) : 0;
-  if (!row) throw new Error('not found');
-  getSheet().getRange(row, COL.called).setValue(true);
+function markDone(id) {
+  var hit = UUID.test(String(id)) ? locate(String(id)) : null;
+  if (!hit) throw new Error('not found');
+  getSheet(hit.kind).getRange(hit.row, SHEETS[hit.kind].col.done).setValue(true);
   return true;
 }
 
@@ -340,10 +410,10 @@ function json(obj) {
 
 /* ── one-time setup ───────────────────────────────────────── */
 
-// Run once from the editor: grants permissions, creates the sheet and the timers.
+// Run once from the editor: grants permissions, creates the sheets and the timers.
 // Running it again is safe, it replaces the timers instead of adding more.
 function setup() {
-  getSheet();
+  KINDS.forEach(getSheet);
   MailApp.getRemainingDailyQuota();
   ScriptApp.getProjectTriggers().forEach(function (t) {
     if (['sendPending', 'weeklyReport'].indexOf(t.getHandlerFunction()) >= 0) ScriptApp.deleteTrigger(t);

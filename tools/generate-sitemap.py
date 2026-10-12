@@ -10,7 +10,8 @@ import xml.sax.saxutils as x
 BASE = "https://pohage.ch"          # no trailing slash
 LANGS = ["de", "en", "fr", "it", "cs"]    # de lives in the repository root
 DEFAULT_LANG = "de"
-PRIORITY = {"index.html": ("1.0", "monthly"), "kontakt.html": ("0.6", "yearly")}
+PRIORITY = {"index.html": ("1.0", "monthly"), "kontakt.html": ("0.6", "yearly"),
+            "ochrana-udaju.html": ("0.2", "yearly")}
 FALLBACK = ("0.8", "monthly")
 
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
