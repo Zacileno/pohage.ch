@@ -2,6 +2,7 @@
 
 Sheet „rezervace termínů pohage.ch“ (účet Zacíleno), dva listy:
 
+- Nové řádky se vkládají nahoru (řádek 2, nejnovější první).
 - **Schůzka**: stránka `pohage.ch/termin` (a jazykové verze) pošle jméno, telefon,
   e-mail, jazyk a 3 vybrané termíny. Tlačítko v e-mailu: **✓ Zavoláno**.
 - **Formulář**: kontaktní formulář na úvodní stránce a na `/kontakt` pošle jméno,

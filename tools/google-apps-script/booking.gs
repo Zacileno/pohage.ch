@@ -4,7 +4,8 @@
  * Two forms post here:
  * - /termin (type "booking"): three preferred callback slots → sheet "Schůzka",
  * - contact form on the homepage and /kontakt (type "contact") → sheet "Formulář".
- * The script validates the request and appends one row to the right sheet.
+ * The script validates the request and inserts one row at the top of the right sheet
+ * (row 2, newest first).
  *
  * Every 15 minutes sendPending() e-mails the office about rows that have not been
  * announced yet (with a link to the sheet and a button that ticks the row off).
@@ -72,7 +73,7 @@ function doPost(e) {
     var lock = LockService.getScriptLock();
     lock.waitLock(10000);
     try {
-      if (!findRow(kind, entry.id)) appendRow(kind, entry);
+      if (!findRow(kind, entry.id)) addRow(kind, entry);
     } finally {
       lock.releaseLock();
     }
@@ -161,7 +162,13 @@ function getSheet(kind) {
   sheet.hideColumns(cfg.col.id, 2);
   // Keeps leading zeros and + in phone numbers.
   sheet.getRange(1, cfg.col.phone, sheet.getMaxRows(), 1).setNumberFormat('@');
-  // Rows that are done turn grey.
+  greyDoneRows(sheet, cfg);
+  return sheet;
+}
+
+// Rows that are done turn grey. Set again after every new row, because inserting
+// a row at the top shifts the rule's range down.
+function greyDoneRows(sheet, cfg) {
   var doneCol = String.fromCharCode(64 + cfg.col.done);
   var lastCol = String.fromCharCode(64 + cfg.header.length);
   var rule = SpreadsheetApp.newConditionalFormatRule()
@@ -171,10 +178,9 @@ function getSheet(kind) {
     .setRanges([sheet.getRange('A2:' + lastCol)])
     .build();
   sheet.setConditionalFormatRules([rule]);
-  return sheet;
 }
 
-function appendRow(kind, x) {
+function addRow(kind, x) {
   var cfg = SHEETS[kind];
   var sheet = getSheet(kind);
   var received = Utilities.formatDate(new Date(), TIME_ZONE, 'dd.MM.yyyy HH:mm');
@@ -182,8 +188,14 @@ function appendRow(kind, x) {
     ? [safe(x.name), safe(x.phone), safe(x.email), safe(x.subject), safe(x.message), x.lang, false, received, x.id, '']
     : [safe(x.name), x.lang, formatSlot(x.slots[0]), formatSlot(x.slots[1]), formatSlot(x.slots[2]),
        safe(x.phone), safe(x.email), false, received, x.id, ''];
-  sheet.appendRow(row);
-  sheet.getRange(sheet.getLastRow(), cfg.col.done).insertCheckboxes();
+  // Newest on top: a fresh row 2 right under the header.
+  sheet.insertRowBefore(2);
+  var range = sheet.getRange(2, 1, 1, row.length);
+  range.setFontWeight('normal').setBackground(null).setFontColor(null);
+  sheet.getRange(2, cfg.col.phone).setNumberFormat('@');
+  range.setValues([row]);
+  sheet.getRange(2, cfg.col.done).insertCheckboxes();
+  greyDoneRows(sheet, cfg);
 }
 
 function findRow(kind, id) {
@@ -363,10 +375,17 @@ function doGet(e) {
 }
 
 function markDone(id) {
-  var hit = UUID.test(String(id)) ? locate(String(id)) : null;
-  if (!hit) throw new Error('not found');
-  getSheet(hit.kind).getRange(hit.row, SHEETS[hit.kind].col.done).setValue(true);
-  return true;
+  // Locked, so a new row inserted at the top cannot shift the row in between.
+  var lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    var hit = UUID.test(String(id)) ? locate(String(id)) : null;
+    if (!hit) throw new Error('not found');
+    getSheet(hit.kind).getRange(hit.row, SHEETS[hit.kind].col.done).setValue(true);
+    return true;
+  } finally {
+    lock.releaseLock();
+  }
 }
 
 function page(title, body) {
