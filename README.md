@@ -52,6 +52,6 @@ photography and 200 px for icons.
 
 ## Contact form
 
-The forms post to a Make webhook defined in `js/main.js`. The success and error
+The forms post to a Make webhook defined in `js/main.js` (`BOOKING_URL`). Both forms use the same webhook; the `type` field is `contact` or `booking`. The success and error
 messages come from `data-success` and `data-error` on `.form-success`, so they are
 translated per page.

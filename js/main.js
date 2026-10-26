@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   /* ── kontaktní formulář ───────────────────────────────── */
-  // Jde do stejného Apps Scriptu jako rezervace (BOOKING_URL níže), list „Formulář“.
+  // Jde na stejný webhook v Make jako rezervace (BOOKING_URL níže), rozlišuje je pole type.
   var DEFAULT_SUCCESS_MESSAGE = 'Děkujeme za zprávu, brzy se vám ozveme.';
   var DEFAULT_ERROR_MESSAGE = 'Zprávu se nepodařilo odeslat. Zkuste to prosím znovu, nebo nás kontaktujte telefonicky či e-mailem.';
 
@@ -91,14 +91,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // text/plain = žádný CORS preflight, Apps Script ho neumí.
-  // Apps Script po zápisu přesměruje na druhou adresu s odpovědí. Ten druhý krok
-  // v některých prohlížečích selže (víc přihlášených Google účtů), i když je řádek
-  // zapsaný. Proto ho nesledujeme: přesměrování = skript požadavek zpracoval.
-  // Neplatná data sem nedojdou, stejné kontroly jako skript dělá už formulář.
+  // text/plain = žádný CORS preflight. Make odpoví textem, ne JSONem,
+  // takže za úspěch bereme jakoukoli odpověď 2xx.
   function sendToScript(payload) {
-    return fetch(BOOKING_URL, { method: 'POST', redirect: 'manual', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
-      .then(function (res) { return res.type === 'opaqueredirect' ? { ok: true } : res.json(); });
+    return fetch(BOOKING_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
+      .then(function (res) { return { ok: res.ok }; });
   }
 
   document.querySelectorAll('.contact-form:not(.booking) form').forEach(function (form) {
@@ -147,8 +144,8 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   /* ── rezervace zpětného hovoru (termin) ──────────────────── */
-  // Google Apps Script web app (tools/google-apps-script/booking.gs), končí na /exec.
-  var BOOKING_URL = 'https://script.google.com/macros/s/AKfycbzmhM75HVOQH5ioOHsjCQRMD4cTI8-pmPD54-LwTVFxrWCYrpQlCFQ0vsAEWYNHttZI/exec';
+  // Webhook v Make, společný pro rezervaci i kontaktní formulář.
+  var BOOKING_URL = 'https://hook.eu1.make.com/qij2hrji2n37e075pl4axmraoop53v2e';
   var SLOT_COUNT = 3;
   // První den, kdy jde termín vybrat (předtím má Dan plno). Musí sedět s FIRST_DAY v booking.gs.
   var FIRST_DAY = new Date(2026, 9, 26);
@@ -307,6 +304,7 @@ document.addEventListener('DOMContentLoaded', function () {
       hint('');
 
       var payload = {
+        type: 'booking',
         requestId: requestId,
         lang: lang,
         name: form.elements.name.value,
