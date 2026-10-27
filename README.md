@@ -52,6 +52,6 @@ photography and 200 px for icons.
 
 ## Contact form
 
-The forms post to a Make webhook defined in `js/main.js` (`BOOKING_URL`). Both forms use the same webhook; the `type` field is `contact` or `booking`. The success and error
+The forms post to a Make webhook defined in `js/main.js` (`BOOKING_URL`). Both forms use the same webhook; the `type` field is `contact` or `booking`. Data go as form fields (`application/x-www-form-urlencoded`), so Make sees each field separately; booking slots arrive as `slot1`–`slot3`. The success and error
 messages come from `data-success` and `data-error` on `.form-success`, so they are
 translated per page.

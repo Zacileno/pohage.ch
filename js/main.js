@@ -91,10 +91,21 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // text/plain = žádný CORS preflight. Make odpoví textem, ne JSONem,
+  // Posíláme jako klasický formulář (URLSearchParams): bez CORS preflightu a Make
+  // z něj rozpozná jednotlivá pole. Z text/plain viděl jen jedno pole „value“.
+  // Pole (termíny) rozepíšeme na slot1, slot2… Make odpoví textem, ne JSONem,
   // takže za úspěch bereme jakoukoli odpověď 2xx.
   function sendToScript(payload) {
-    return fetch(BOOKING_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
+    var body = new URLSearchParams();
+    Object.keys(payload).forEach(function (key) {
+      var value = payload[key];
+      if (Array.isArray(value)) {
+        value.forEach(function (item, i) { body.append(key.replace(/s$/, '') + (i + 1), item); });
+      } else {
+        body.append(key, String(value));
+      }
+    });
+    return fetch(BOOKING_URL, { method: 'POST', body: body })
       .then(function (res) { return { ok: res.ok }; });
   }
 
